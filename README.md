@@ -8,7 +8,7 @@
 
 ## ✨ 核心特性
 
-- **完整的Shell基础**：支持外部命令执行、管道 (`|`)、内置命令和友好交互
+- **完整的Shell基础**：支持程序后台运行、内部/外部命令执行、重定向、管道 (`|`)、内置命令和友好交互
 - **三大增强功能**：
   - **命令别名**：支持 `alias`/`unalias` 命令，配置持久化
   - **智能Tab补全**：命令补全、路径补全、多选项提示
@@ -44,48 +44,54 @@ MyShell/
 - Python 3.6+
 - Linux 或 macOS 系统
 
+
+## 测试说明
+有时候会出现‘mysh: 命令未找到’，重新输入命令即可
+
 **如何运行**
-在Linux中安装python后用 ‘python main.py’ 运行即可
-
-
+需要使用Linux，在Linux中安装python后用 ‘python main.py’ 运行即可
 
 **后台运行功能**
 使用例 ‘sleep 10 &’ 命令，10表示10毫秒
 
+**外部命令示例**
+    python -V
+    gcc -v
+    ls
+
 **重定向测试示例**
-    # 输出重定向（覆盖）
+    输出重定向（覆盖）
         echo "Hello World" > test.txt
         cat test.txt
 
-    # 输出重定向（追加）
+    输出重定向（追加）
         echo "Second line" >> test.txt
         cat test.txt
 
-    # 输入重定向
+    输入重定向
         cat < test.txt
 
-    # 结合使用
+    结合使用
         wc -l < test.txt > line_count.txt
         cat line_count.txt
 
-    # 后台运行与重定向结合
+    后台运行与重定向结合
         sleep 5 > sleep_output.txt &
 
-
 **管道测试示例**
-    # 基础管道
+    基础管道
         ls | grep py
 
         ps aux | grep python
 
         cat /etc/passwd | cut -d: -f1 | sort
 
-    # 多级管道
+    多级管道
         ls -la | grep "\.txt" | wc -l
 
         ps aux | sort -nrk 3 | head -5
 
-    # 管道与重定向组合
+    管道与重定向组合
         ls | grep py > python_files.txt
         cat python_files.txt
 
@@ -94,3 +100,4 @@ MyShell/
 
         ps aux | grep python > processes.txt
         cat processes.txt
+
