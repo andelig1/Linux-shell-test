@@ -2,29 +2,52 @@
 操作系统作业
 使用python，软件使用pycharm
 
-**项目结构**
+# MyShell - 增强型 Python Shell
+
+一个用 Python 实现的类 Linux Shell，支持命令管道、内置命令，并创新性地实现了**命令别名**、**Tab键补全**和**通配符扩展**功能。
+
+## ✨ 核心特性
+
+- **完整的Shell基础**：支持外部命令执行、管道 (`|`)、内置命令和友好交互
+- **三大增强功能**：
+  - **命令别名**：支持 `alias`/`unalias` 命令，配置持久化
+  - **智能Tab补全**：命令补全、路径补全、多选项提示
+  - **通配符扩展**：支持 `*`、`?` 等通配符，自动扩展文件列表
+- **现代化交互**：彩色提示符、完整退格支持、Ctrl+C/D 正确处理
+
+## 📁 项目结构
 MyShell/
-├── src/                   # 源代码目录
-│   ├── main.py            # 程序入口，负责主循环和协调
-│   ├── parser/            # 解析模块
-│   │   ├── __init__.py
-│   │   ├── parser.py      # 命令解析器
-│   │   └── tokens.py      # 定义令牌或命令结构（如未来支持管道重定向）
-│   ├── builtin/           # 内置命令
-│   │   ├── __init__.py
-│   │   ├── builtin.py     # 内置命令执行器
-│   │   └── commands.py    # 各个内置命令的具体实现（如 cd, exit）
-│   ├── utils/             # 工具函数
-│   │   ├── __init__.py
-│   │   └── helpers.py     # 如提示符生成、错误处理等工具
-│   └── external/          # 外部命令执行
-│       ├── __init__.py
-│       └── executor.py    # 处理外部命令的 fork/exec 逻辑
-├── requirements.txt       # Python 项目依赖（当前为空）
-└── README.md
+├── src/
+│ ├── main.py # 程序入口，主循环和输入处理
+│ ├── parser/
+│ │ ├── init.py
+│ │ └── parser.py # 命令解析器（支持管道）
+│ ├── builtin/
+│ │ ├── init.py
+│ │ ├── builtin.py # 内置命令执行器
+│ │ └── commands.py # 内置命令实现 & 别名管理器
+│ ├── utils/
+│ │ ├── init.py
+│ │ ├── helpers.py # 工具函数（彩色提示符等）
+│ │ ├── wildcard_expander.py # 通配符扩展器
+│ │ ├── completer.py # 补全逻辑
+│ │ └── tab_handler.py # Tab键处理器
+│ └── external/
+│ ├── init.py
+│ └── executor.py # 外部命令执行（支持管道）
+├── requirements.txt # 项目依赖（当前为空）
+└── README.md # 本文档
+
+## 🚀 快速开始
+
+### 环境要求
+- Python 3.6+
+- Linux 或 macOS 系统
 
 **如何运行**
 在Linux中安装python后用 ‘python main.py’ 运行即可
+
+
 
 **后台运行功能**
 使用例 ‘sleep 10 &’ 命令，10表示10毫秒

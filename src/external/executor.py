@@ -1,6 +1,5 @@
 import os
 import sys
-import subprocess
 
 
 def execute_external(cmd_tokens, background=False, redirections=None, is_pipeline=False, pipeline_commands=None):
