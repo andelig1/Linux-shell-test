@@ -1,37 +1,52 @@
-import subprocess
+import os
 import sys
+import subprocess
 
 
 def execute_external(cmd_tokens):
     """
-    在一个子进程中执行外部命令。
+    使用 fork/exec 机制执行外部命令
 
     Args:
         cmd_tokens (list): 包含命令及其参数的列表，例如 ['ls', '-l']
     """
     try:
-        # 使用 subprocess.run 来执行命令
-        # 它会等待命令完成，然后返回一个 CompletedProcess 对象
-        result = subprocess.run(
-            cmd_tokens,
-            check=False,  # 如果命令返回非零退出码，我们不希望抛出异常，而是自己处理
-            capture_output=True,  # 捕获标准输出和标准错误
-            encoding='utf-8'  # 以文本模式处理输出
-        )
+        # 创建子进程
+        pid = os.fork()
+        if pid == 0:
+            # 子进程代码
+            try:
+                # 使用 execvp 执行命令
+                # execvp 会在 PATH 环境变量中查找命令
+                os.execvp(cmd_tokens[0], cmd_tokens)
+            except FileNotFoundError:
+                print(f"mysh: 命令未找到: {cmd_tokens[0]}", file=sys.stderr)
+                sys.exit(127)  # 127 是命令未找到的标准退出码
+            except PermissionError:
+                print(f"mysh: 权限不足: {cmd_tokens[0]}", file=sys.stderr)
+                sys.exit(126)  # 126 是权限错误的标准退出码
+            except Exception as e:
+                print(f"mysh: 执行错误 '{cmd_tokens[0]}': {e}", file=sys.stderr)
+                sys.exit(1)
+        else:
+            # 父进程代码
+            # 等待子进程结束
+            _, status = os.waitpid(pid, 0)
 
-        # 打印命令的输出
-        if result.stdout:
-            print(result.stdout, end='')
-        if result.stderr:
-            print(result.stderr, end='', file=sys.stderr)
+            # 检查子进程是否正常退出
+            if os.WIFEXITED(status):
+                exit_code = os.WEXITSTATUS(status)
+                # 如果需要，可以在这里处理退出码
+                # if exit_code != 0:
+                #     print(f"进程退出，状态码: {exit_code}")
+            elif os.WIFSIGNALED(status):
+                signal_num = os.WTERMSIG(status)
+                print(f"\n进程被信号终止: {signal_num}", file=sys.stderr)
 
-        # 选择是否打印返回码（调试用）
-        # if result.returncode != 0:
-        #     print(f"Process finished with exit code {result.returncode}")
-
-    except FileNotFoundError:
-        print(f"mysh: 命令未找到: {cmd_tokens[0]}")
-    except PermissionError:
-        print(f"mysh: 权限不足: {cmd_tokens[0]}")
+    except OSError as e:
+        print(f"mysh: fork 失败: {e}", file=sys.stderr)
+    except KeyboardInterrupt:
+        # 处理在等待子进程时按 Ctrl+C
+        print()  # 换行
     except Exception as e:
-        print(f"mysh: 执行错误 '{cmd_tokens[0]}': {e}")
+        print(f"mysh: 意外错误: {e}", file=sys.stderr)
