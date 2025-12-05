@@ -1,4 +1,5 @@
 import os
+HISTORY_LIST = []
 
 def builtin_cd(args):
     """内置命令 cd: 切换工作目录"""
@@ -33,6 +34,12 @@ MyShell (Python) Built-in Commands:
     print(help_text)
     return False
 
+def builtin_history(args):
+    """内置命令 history: 显示历史记录"""
+    for i, cmd in enumerate(HISTORY_LIST, 1):
+        print(f"{i}  {cmd}")
+    return False  # 不退出 Shell
+
 # 内置命令字典：命令名称 -> 执行函数
 builtin_commands = {
     "cd": builtin_cd,
@@ -40,4 +47,5 @@ builtin_commands = {
     "logout": builtin_exit,  # logout 作为 exit 的别名
     "pwd": builtin_pwd,
     "help": builtin_help,
+    "history": builtin_history,
 }

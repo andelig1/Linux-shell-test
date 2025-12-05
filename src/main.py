@@ -10,7 +10,7 @@ from .utils.helpers import print_prompt
 from .parser.parser import parse_input
 from .builtin.builtin import is_builtin_command, execute_builtin
 from .external.executor import execute_external
-
+from .builtin.commands import HISTORY_LIST
 
 def main_loop():
     """Shell 的主循环"""
@@ -25,6 +25,7 @@ def main_loop():
             user_input = input().strip()
             if not user_input:
                 continue  # 忽略空输入
+            HISTORY_LIST.append(user_input)
 
             # 3. 解析输入
             # 此时，command_tokens 是一个列表，例如 ['ls', '-l']
