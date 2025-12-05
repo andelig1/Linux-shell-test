@@ -22,4 +22,6 @@ MyShell/
 ├── requirements.txt       # Python 项目依赖（当前为空）
 └── README.md
 
-在终端输入 python -m src.main 运行，而不是直接运行
+如何运行
+pycharm：在终端输入 python -m src.main 运行，而不是直接运行
+Linux：在Linux中安装python后用python main.py运行即可
