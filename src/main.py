@@ -12,15 +12,15 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from .builtin.commands import HISTORY_LIST
 
 # 导入自定义模块（在pycharm上跑时在每个库前面加一个“.”，不然会报错，在Linux上跑不能加）
-from utils.helpers import print_prompt
-from parser.parser import parse_input
-from builtin.builtin import is_builtin_command, execute_builtin
-from external.executor import execute_external
+# from utils.helpers import print_prompt
+# from parser.parser import parse_input
+# from builtin.builtin import is_builtin_command, execute_builtin
+# from external.executor import execute_external
 
-# from .utils.helpers import print_prompt
-# from .parser.parser import parse_input
-# from .builtin.builtin import is_builtin_command, execute_builtin
-# from .external.executor import execute_external
+from .utils.helpers import print_prompt
+from .parser.parser import parse_input
+from .builtin.builtin import is_builtin_command, execute_builtin
+from .external.executor import execute_external
 
 
 def main_loop():
